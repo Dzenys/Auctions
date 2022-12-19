@@ -5,6 +5,6 @@ api-version: 1.13
 
 
 commands:
-  ac:
+  am:
     description: allows to give items into auction
-    usage: /ac
+    usage: /am

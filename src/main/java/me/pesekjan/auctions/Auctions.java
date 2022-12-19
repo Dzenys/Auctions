@@ -6,7 +6,7 @@ public class Auctions extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getCommand("cw").setExecutor(new Command());
+        getCommand("am").setExecutor(new Command());
     }
 
     public void onDisable() {

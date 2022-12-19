@@ -1,5 +1,6 @@
 package me.pesekjan.auctions.guis;
 
+import me.pesekjan.auctions.AuctionEntry;
 import me.pesekjan.auctions.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AuctionGui {
@@ -19,10 +21,10 @@ public class AuctionGui {
     private static final int[] auctionItemLocations = {11,12,13,14,15,16,17,20,21,22,23,24,25,26,29,30,31,32,33,34,35,38,39,40,41,42,43,44};
 
 
-    public static Inventory gui1() {
+    public static Inventory gui(int page) {
 
         int inventorySize = 54;
-        Inventory inventory = Bukkit.createInventory(null, inventorySize, AUCTIONGUI);
+        Inventory inventory = Bukkit.createInventory(null, inventorySize, AUCTIONGUI + " (Stranka " + page + ")");
 
         ItemStack glassPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta im = glassPane.getItemMeta();
@@ -48,8 +50,22 @@ public class AuctionGui {
         p2.setItemMeta(im2);
         inventory.setItem(itemLocations[1], p2);
 
-        for (int i = 0; i < auctionItemLocations.length; i++) {
+        int slot = 0;
+        for (int i = AuctionEntry.AUCTION_ENTRIES.size()-1-(auctionItemLocations.length * (page-1)); i > -1; i--) {
+            AuctionEntry entry = AuctionEntry.AUCTION_ENTRIES.get(i);
 
+            ItemStack item = entry.itemStack;
+            ItemMeta meta = item.getItemMeta();
+            assert meta != null;
+            List<String> lore = new ArrayList<>(meta.getLore() != null ? meta.getLore() : Collections.emptyList());
+            lore.add("");
+            lore.add("Cena predmetu: " + ChatColor.RED + entry.price);
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+
+            inventory.setItem(auctionItemLocations[slot],item);
+            slot++;
+            if(slot >= auctionItemLocations.length) break;
         }
 
         return inventory;

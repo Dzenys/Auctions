@@ -2,7 +2,6 @@ package me.pesekjan.auctions;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.*;
 
 public class AuctionEntry {
