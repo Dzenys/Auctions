@@ -49,8 +49,8 @@ public class Command implements org.bukkit.command.CommandExecutor {
         }
 
         if(args[0].equals("open")){
-            PAGE.put(player, 0);
-            player.openInventory(AuctionGui.gui(0));
+            PAGE.put(player, 1);
+            player.openInventory(AuctionGui.gui(1));
         }
         return true;
     }

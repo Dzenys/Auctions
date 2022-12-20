@@ -2,6 +2,8 @@ main: me.pesekjan.auctions.Auctions
 name: Auctions
 version: 1.0.0
 api-version: 1.13
+depend:
+  - Vault
 
 
 commands:
