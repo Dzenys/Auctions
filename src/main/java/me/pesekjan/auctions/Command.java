@@ -2,6 +2,7 @@ package me.pesekjan.auctions;
 
 import me.pesekjan.auctions.guis.AuctionGui;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +25,8 @@ public class Command implements org.bukkit.command.CommandExecutor {
         if (args.length == 0){
             player.sendMessage(ChatColor.GRAY + "======Dostupne prikazy======");
             player.sendMessage(ChatColor.RED + "/am add <hodnota>" + ChatColor.YELLOW + " - prida item do aukce");
+            player.sendMessage(ChatColor.RED + "/am open" + ChatColor.YELLOW + " - otevre aukci");
+            return true;
         }
 
         if (args[0].equals("add")) {
@@ -33,9 +36,13 @@ public class Command implements org.bukkit.command.CommandExecutor {
             }
 
             if (args[1].matches("\\d+")) {
-                if (player.getItemInUse() == null) player.sendMessage(ChatColor.RED + "Nedrzis v ruce predmet");
+                ItemStack item = player.getInventory().getItemInMainHand();
+                if (item.getType() == Material.AIR) {
+                    player.sendMessage(ChatColor.RED + "Nedrzis v ruce predmet");
+                    return true;
+                }
 
-                ItemStack item = player.getItemInUse().clone();
+                item = item.clone();
                 player.sendMessage(ChatColor.RED + "Predmet byl vlozen do aukce");
                 player.getInventory().setItemInMainHand(null);
                 AuctionEntry entry = new AuctionEntry(item, Integer.parseInt(args[1]), player.getUniqueId(), System.currentTimeMillis());

@@ -11,8 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -30,15 +28,15 @@ public class Utils {
 
     private static class PlayerTexturesImpl implements PlayerTextures {
 
-        private static final Pattern texturesPattern = Pattern.compile("\\{\"textures\":\\{\"SKIN\":\\{\"url\":\"(.+)\"}}}");
-
         private URL textures;
 
         private PlayerTexturesImpl(String textures) {
             String decoded = new String(Base64.getDecoder().decode(textures));
-            Matcher matcher = texturesPattern.matcher(decoded);
             try {
-                this.textures = new URL(matcher.group(1));
+                this.textures = new URL(decoded
+                        .replace("{\"textures\":{\"SKIN\":{\"url\":\"", "")
+                        .replace("\"}}}", "")
+                );
             } catch (MalformedURLException ignored) { }
         }
 

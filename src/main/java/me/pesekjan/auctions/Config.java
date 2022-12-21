@@ -15,6 +15,7 @@ public class Config {
             config.set(entry.timestamp + ".price", entry.price);
             config.set(entry.timestamp + ".timestamp", entry.timestamp);
         }
+        Auctions.getPlugin().saveConfig();
     }
 
     public static void load() {

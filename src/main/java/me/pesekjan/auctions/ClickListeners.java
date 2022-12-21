@@ -1,6 +1,7 @@
 package me.pesekjan.auctions;
 
 import me.pesekjan.auctions.guis.AuctionGui;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -27,18 +28,22 @@ public class ClickListeners implements Listener {
         if (inventory == null) return;
 
         switch (ce.getSlot()) {
-            case 52 -> {
+            case 51 -> {
+                if(Math.ceil((double) AuctionEntry.AUCTION_ENTRIES.size() / AuctionGui.auctionItemLocations.length) > page+1)
+                    return;
                 player.openInventory(AuctionGui.gui(++page));
                 Command.PAGE.put(player, page);
             }
-            case 48 -> {
-
+            case 47 -> {
+                if(Math.ceil((double) AuctionEntry.AUCTION_ENTRIES.size() / AuctionGui.auctionItemLocations.length) < page -1)
+                    return;
                 player.openInventory(AuctionGui.gui(--page));
                 Command.PAGE.put(player, page);
 
             }
 
-            case 11,12,13,14,15,16,17,20,21,22,23,24,25,26,29,30,31,32,33,34,35,38,39,40,41,42,43,44 -> {
+            case 10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43 -> {
+                Economy econ = Bukkit.getServer().getServicesManager().getRegistration(Economy.class).getProvider();
                 int index = 0;
                 for (int i = 0; i < AuctionGui.auctionItemLocations.length; i++) {
                     if(AuctionGui.auctionItemLocations[i] != ce.getSlot()) continue;
@@ -49,7 +54,7 @@ public class ClickListeners implements Listener {
                 AuctionEntry entry = AuctionEntry.AUCTION_ENTRIES.get(index);
                 int price = entry.price;
 
-                double balance = Auctions.rsp.getProvider().getBalance(player);
+                double balance = econ.getBalance(player);
                 if (balance < price) {
                     player.sendMessage(ChatColor.RED + "Nemas dostatek penez", ChatColor.RED + "Ke koupi ti chybi " + ChatColor.YELLOW + (price-balance));
                     return;
@@ -61,8 +66,8 @@ public class ClickListeners implements Listener {
                     return;
                 }
                 AuctionEntry.AUCTION_ENTRIES.remove(index);
-                Auctions.rsp.getProvider().withdrawPlayer(player, price);
-                Auctions.rsp.getProvider().depositPlayer(Bukkit.getOfflinePlayer(entry.uuid), price);
+                econ.withdrawPlayer(player, price);
+                econ.depositPlayer(Bukkit.getOfflinePlayer(entry.uuid), price);
                 for(Player onlinePlayer: Bukkit.getOnlinePlayers()) {
                     if (onlinePlayer.getOpenInventory().getTitle().startsWith(AuctionGui.AUCTIONGUI))
                         onlinePlayer.openInventory(AuctionGui.gui(page));

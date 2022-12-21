@@ -16,7 +16,7 @@ import java.util.List;
 public class AuctionGui {
 
     public static final String AUCTIONGUI = ChatColor.YELLOW + (ChatColor.BOLD + "Aukcni Mistnost");
-    public static final int[] auctionItemLocations = {11,12,13,14,15,16,17,20,21,22,23,24,25,26,29,30,31,32,33,34,35,38,39,40,41,42,43,44};
+    public static final int[] auctionItemLocations = {10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43};
 
 
     public static Inventory gui(int page) {
@@ -33,17 +33,17 @@ public class AuctionGui {
             inventory.setItem(i, glassPane);
         }
 
-        int[] itemLocations = {48, 52};
+        int[] itemLocations = {47, 51};
 
-        ItemStack p = Utils.getTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDJiMGMwN2ZhMGU4OTIzN2Q2NzllMTMxMTZiNWFhNzVhZWJiMzRlOWM5NjhjNmJhZGIyNTFlMTI3YmRkNWIxIn19fQ==");
+        ItemStack p = new ItemStack(Material.ARROW); // Utils.getTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDJiMGMwN2ZhMGU4OTIzN2Q2NzllMTMxMTZiNWFhNzVhZWJiMzRlOWM5NjhjNmJhZGIyNTFlMTI3YmRkNWIxIn19fQ==");
         im = p.getItemMeta();
-        if (im != null) im.setDisplayName(ChatColor.RED + (ChatColor.BOLD + "Dalsi stranka"));
+        if (im != null) im.setDisplayName(ChatColor.RED + (ChatColor.BOLD + "Predchozi stranka"));
         p.setItemMeta(im);
         inventory.setItem(itemLocations[0], p);
 
-        ItemStack p2 = Utils.getTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU5YmUxNTU3MjAxYzdmZjFhMGIzNjk2ZDE5ZWFiNDEwNDg4MGQ2YTljZGI0ZDVmYTIxYjZkYWE5ZGIyZDEifX19==");
+        ItemStack p2 = new ItemStack(Material.ARROW); // Utils.getTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDU5YmUxNTU3MjAxYzdmZjFhMGIzNjk2ZDE5ZWFiNDEwNDg4MGQ2YTljZGI0ZDVmYTIxYjZkYWE5ZGIyZDEifX19==");
         ItemMeta im2 = p2.getItemMeta();
-        if (im2 != null) im2.setDisplayName(ChatColor.RED + (ChatColor.BOLD + "Predchozi stranka"));
+        if (im2 != null) im2.setDisplayName(ChatColor.RED + (ChatColor.BOLD + "Dalsi stranka"));
         p2.setItemMeta(im2);
         inventory.setItem(itemLocations[1], p2);
 
@@ -51,7 +51,7 @@ public class AuctionGui {
         for (int i = AuctionEntry.AUCTION_ENTRIES.size()-1-(auctionItemLocations.length * (page-1)); i > -1; i--) {
             AuctionEntry entry = AuctionEntry.AUCTION_ENTRIES.get(i);
 
-            ItemStack item = entry.itemStack;
+            ItemStack item = entry.itemStack.clone();
             ItemMeta meta = item.getItemMeta();
             assert meta != null;
             List<String> lore = new ArrayList<>(meta.getLore() != null ? meta.getLore() : Collections.emptyList());
