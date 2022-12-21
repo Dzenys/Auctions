@@ -4,12 +4,10 @@ import me.pesekjan.auctions.guis.AuctionGui;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Command implements org.bukkit.command.CommandExecutor {
@@ -40,7 +38,7 @@ public class Command implements org.bukkit.command.CommandExecutor {
                 ItemStack item = player.getItemInUse().clone();
                 player.sendMessage(ChatColor.RED + "Predmet byl vlozen do aukce");
                 player.getInventory().setItemInMainHand(null);
-                AuctionEntry entry = new AuctionEntry(item, Integer.parseInt(args[1]), player.getName(), System.currentTimeMillis());
+                AuctionEntry entry = new AuctionEntry(item, Integer.parseInt(args[1]), player.getUniqueId(), System.currentTimeMillis());
                 AuctionEntry.AUCTION_ENTRIES.add(entry);
                 AuctionEntry.PLAYER_ENTRIES_MAP.putIfAbsent(player, new ArrayList<>());
                 AuctionEntry.PLAYER_ENTRIES_MAP.get(player).add(entry);

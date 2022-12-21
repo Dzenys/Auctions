@@ -1,9 +1,8 @@
 package me.pesekjan.auctions;
 
 import me.pesekjan.auctions.guis.AuctionGui;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.WorldType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,11 +11,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.stream.IntStream;
 
 public class ClickListeners implements Listener {
+
     @EventHandler
     public void onClick(InventoryClickEvent ce) {
+
         if (!ce.getView().getTitle().startsWith(AuctionGui.AUCTIONGUI))
             return;
             ce.setCancelled(true);
@@ -25,8 +25,6 @@ public class ClickListeners implements Listener {
         int page = Command.PAGE.get(player);
         Inventory inventory = ce.getClickedInventory();
         if (inventory == null) return;
-        ItemStack item = ce.getClickedInventory().getItem(ce.getSlot());
-
 
         switch (ce.getSlot()) {
             case 52 -> {
@@ -57,21 +55,21 @@ public class ClickListeners implements Listener {
                     return;
                 }
 
-                Inventory playerInventory = player.getInventory();
                 HashMap<Integer, ItemStack> result = inventory.addItem(entry.itemStack);
                 if(result.values().size() > 0) {
                     player.sendMessage(ChatColor.RED + "Mas plny inventar");
                     return;
                 }
                 AuctionEntry.AUCTION_ENTRIES.remove(index);
-                player.openInventory(AuctionGui.gui(page));
                 Auctions.rsp.getProvider().withdrawPlayer(player, price);
+                Auctions.rsp.getProvider().depositPlayer(Bukkit.getOfflinePlayer(entry.uuid), price);
+                for(Player onlinePlayer: Bukkit.getOnlinePlayers()) {
+                    if (onlinePlayer.getOpenInventory().getTitle().startsWith(AuctionGui.AUCTIONGUI))
+                        onlinePlayer.openInventory(AuctionGui.gui(page));
+                }
+
 
             }
-
-
-
-
 
 
 }

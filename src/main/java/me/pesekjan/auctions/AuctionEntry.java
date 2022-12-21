@@ -8,16 +8,16 @@ public class AuctionEntry {
 
     public ItemStack itemStack;
     public int price;
-    public String owner;
+    public UUID uuid;
     public long timestamp;
 
     public static final Map<Player, List<AuctionEntry>> PLAYER_ENTRIES_MAP = new HashMap<>();
     public static final List<AuctionEntry> AUCTION_ENTRIES = new ArrayList<>();
 
-    public AuctionEntry(ItemStack itemStack, int price, String owner, long timestamp){
+    public AuctionEntry(ItemStack itemStack, int price, UUID uuid, long timestamp){
             this.itemStack = itemStack;
             this.price = price;
-            this.owner = owner;
+            this.uuid = uuid;
             this.timestamp = timestamp;
     }
 

@@ -5,11 +5,9 @@ import me.pesekjan.auctions.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Skull;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +37,6 @@ public class AuctionGui {
 
         ItemStack p = Utils.getTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDJiMGMwN2ZhMGU4OTIzN2Q2NzllMTMxMTZiNWFhNzVhZWJiMzRlOWM5NjhjNmJhZGIyNTFlMTI3YmRkNWIxIn19fQ==");
         im = p.getItemMeta();
-        SkullMeta sm = (SkullMeta)p.getItemMeta();
         if (im != null) im.setDisplayName(ChatColor.RED + (ChatColor.BOLD + "Dalsi stranka"));
         p.setItemMeta(im);
         inventory.setItem(itemLocations[0], p);
