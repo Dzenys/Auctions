@@ -1,17 +1,26 @@
 package me.pesekjan.auctions;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.UUID;
 
 public class Config {
 
     public static void save() {
         FileConfiguration config = Auctions.getPlugin().getConfig();
+        try {
+            config.load(new StringReader(""));
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return;
+        }
         for(AuctionEntry entry : AuctionEntry.AUCTION_ENTRIES){
             config.set(entry.timestamp + ".itemStack", entry.itemStack);
-            config.set(entry.timestamp + ".uuid", entry.uuid);
+            config.set(entry.timestamp + ".uuid", entry.uuid.toString());
             config.set(entry.timestamp + ".price", entry.price);
             config.set(entry.timestamp + ".timestamp", entry.timestamp);
         }

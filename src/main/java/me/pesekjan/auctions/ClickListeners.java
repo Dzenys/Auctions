@@ -20,23 +20,23 @@ public class ClickListeners implements Listener {
 
         if (!ce.getView().getTitle().startsWith(AuctionGui.AUCTIONGUI))
             return;
-            ce.setCancelled(true);
-            if (ce.getCurrentItem() == null) return;
+        ce.setCancelled(true);
+        if (ce.getCurrentItem() == null) return;
         Player player = (Player) ce.getWhoClicked();
         int page = Command.PAGE.get(player);
         Inventory inventory = ce.getClickedInventory();
         if (inventory == null) return;
+        if (inventory == player.getInventory()) return;
 
         switch (ce.getSlot()) {
             case 51 -> {
-                if(Math.ceil((double) AuctionEntry.AUCTION_ENTRIES.size() / AuctionGui.auctionItemLocations.length) > page+1)
+                if(Math.ceil((double) AuctionEntry.AUCTION_ENTRIES.size() / AuctionGui.auctionItemLocations.length) < page+1)
                     return;
                 player.openInventory(AuctionGui.gui(++page));
                 Command.PAGE.put(player, page);
             }
             case 47 -> {
-                if(Math.ceil((double) AuctionEntry.AUCTION_ENTRIES.size() / AuctionGui.auctionItemLocations.length) < page -1)
-                    return;
+                if(page == 1) return;
                 player.openInventory(AuctionGui.gui(--page));
                 Command.PAGE.put(player, page);
 
@@ -51,6 +51,9 @@ public class ClickListeners implements Listener {
                     break;
                 }
                 index = AuctionGui.auctionItemLocations.length * (page-1) + index;
+                index = AuctionEntry.AUCTION_ENTRIES.size() - index - 1;
+                if(index < 0 || index >= AuctionEntry.AUCTION_ENTRIES.size())
+                    return;
                 AuctionEntry entry = AuctionEntry.AUCTION_ENTRIES.get(index);
                 int price = entry.price;
 
@@ -60,7 +63,7 @@ public class ClickListeners implements Listener {
                     return;
                 }
 
-                HashMap<Integer, ItemStack> result = inventory.addItem(entry.itemStack);
+                HashMap<Integer, ItemStack> result = player.getInventory().addItem(entry.itemStack);
                 if(result.values().size() > 0) {
                     player.sendMessage(ChatColor.RED + "Mas plny inventar");
                     return;
